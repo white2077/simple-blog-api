@@ -1,0 +1,39 @@
+{
+  "Version": 1,
+  "Hash": "fX8nMzq4FTkvzkqW896lnBZiKtPfhSTY3H0s7DHvWVk=",
+  "Source": "AspNetCoreRestfulApi",
+  "BasePath": "_content/AspNetCoreRestfulApi",
+  "Mode": "Default",
+  "ManifestType": "Publish",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [
+    {
+      "Name": "AspNetCoreRestfulApi\\wwwroot",
+      "Source": "AspNetCoreRestfulApi",
+      "ContentRoot": "E:\\CProject\\AspNetCoreRestfulApi\\wwwroot\\",
+      "BasePath": "_content/AspNetCoreRestfulApi",
+      "Pattern": "**"
+    }
+  ],
+  "Assets": [
+    {
+      "Identity": "E:\\CProject\\AspNetCoreRestfulApi\\wwwroot\\js\\signalr\\dist\\browser\\signalr.js",
+      "SourceId": "AspNetCoreRestfulApi",
+      "SourceType": "Discovered",
+      "ContentRoot": "E:\\CProject\\AspNetCoreRestfulApi\\wwwroot\\",
+      "BasePath": "_content/AspNetCoreRestfulApi",
+      "RelativePath": "js/signalr/dist/browser/signalr.js",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\js\\signalr\\dist\\browser\\signalr.js"
+    }
+  ]
+}

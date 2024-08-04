@@ -1,20 +1,17 @@
-﻿using AspNetCoreRestfulApi.Entity;
+﻿using AspNetCoreRestfulApi.Entities;
+using AspNetCoreRestfulApi.Entity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
-namespace AspNetCoreRestfulApi.DBContext
+namespace AspNetCoreRestfulApi.Data
 {
-    public class AppDBContext : IdentityDbContext<User,IdentityRole<int>,int>
+    public class AppDbContext(DbContextOptions<AppDbContext> options)
+        : IdentityDbContext<User, IdentityRole<int>,int>(options)
     {
         // Maping entity to table
-        public DbSet<User> Users { get; set; }
+        public DbSet<User> User { get; set; }
         public DbSet<Blog> Blogs { get; set; }
         public DbSet<Post> Posts { get; set; }
-
-        public AppDBContext(DbContextOptions<AppDBContext> options) : base(options)
-        {
-            
-        }
     }
 }

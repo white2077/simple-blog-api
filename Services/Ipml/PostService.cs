@@ -1,20 +1,20 @@
 ﻿using AspNetCoreRestfulApi.Core.CustomException;
 using AspNetCoreRestfulApi.Core.Page;
-using AspNetCoreRestfulApi.DBContext;
 using AspNetCoreRestfulApi.Dto.Request;
 using AspNetCoreRestfulApi.Dto.Response;
 using AspNetCoreRestfulApi.Entity;
 using AspNetCoreRestfulApi.Utils;
 using Microsoft.EntityFrameworkCore;
 using System.Net;
+using AspNetCoreRestfulApi.Data;
 
 namespace AspNetCoreRestfulApi.Services.Ipml
 {
     public class PostService : IPostService
     {
-        private readonly AppDBContext _context;
+        private readonly AppDbContext _context;
 
-        public PostService(AppDBContext context)
+        public PostService(AppDbContext context)
         {
             _context = context;
         }

@@ -1,24 +1,18 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using AspNetCoreRestfulApi.Core.CoreEntity;
+using AspNetCoreRestfulApi.Entity;
 using Microsoft.AspNetCore.Identity;
 
-namespace AspNetCoreRestfulApi.Entity
+namespace AspNetCoreRestfulApi.Entities
 {
     [Table("User")]
     public class User : IdentityUser<int>
     {
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int Id { get; set; }
-
+        
         [Column("Name")]
         [Required]
         public string Name { get; set; }
-
-        [Column("Email")]
-        public string Email { get; set; }
-
+        
         [Required]
         [Column("created_at")]
         public DateTime CreatedAt { get; set; }
@@ -31,7 +25,6 @@ namespace AspNetCoreRestfulApi.Entity
         public User(string name, string email):base()
         {
             Name = name;
-            Email = email;
         }
         public User():base()
         {

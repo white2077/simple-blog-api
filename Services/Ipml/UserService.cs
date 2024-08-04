@@ -5,21 +5,23 @@ using AspNetCoreRestfulApi.Dto.Response;
 using AspNetCoreRestfulApi.Entity;
 using AspNetCoreRestfulApi.Utils;
 using System.Net;
+using AspNetCoreRestfulApi.Data;
+using AspNetCoreRestfulApi.Entities;
 
 namespace AspNetCoreRestfulApi.Services.Ipml
 {
     public class UserService : IUserService
     {
-        private readonly DBContext.AppDBContext _context;
+        private readonly AppDbContext _context;
 
-        public UserService(DBContext.AppDBContext context)
+        public UserService(AppDbContext context)
         {
             _context = context;
         }
 
         public  Pageable<UserResponseDTO> GetAll(int page, int size)
         {
-            return _context.Users
+            return _context.User
               .Select(u => new UserResponseDTO
               {
                   Id = u.Id,
@@ -30,7 +32,7 @@ namespace AspNetCoreRestfulApi.Services.Ipml
 
         public  UserResponseDTO GetById(int id)
         {
-            var user =  _context.Users.Find(id)??throw new HttpResponseException(404,"That entity not found for abc =)))) ");
+            var user =  _context.User.Find(id)??throw new HttpResponseException(404,"That entity not found for abc =)))) ");
 
             return new UserResponseDTO
             {
@@ -48,7 +50,7 @@ namespace AspNetCoreRestfulApi.Services.Ipml
                 Email = entity.Email,
             };
 
-            _context.Users.Add(user);
+            _context.User.Add(user);
             _context.SaveChanges();
 
             return new UserResponseDTO
@@ -61,7 +63,7 @@ namespace AspNetCoreRestfulApi.Services.Ipml
 
         public UserResponseDTO Update(int id, UserRequestDTO entity)
         {
-           var user = _context.Users
+           var user = _context.User
                     .Where(u => u.Id == id)
 
                     .FirstOrDefault();
@@ -79,7 +81,7 @@ namespace AspNetCoreRestfulApi.Services.Ipml
 
         public void Delete(int id)
         {
-            _context.Users.Remove(_context.Users.Find(id)?? throw new HttpResponseException((int)HttpStatusCode.NotFound, "Not found"));
+            _context.User.Remove(_context.User.Find(id)?? throw new HttpResponseException((int)HttpStatusCode.NotFound, "Not found"));
         }
     }
 }

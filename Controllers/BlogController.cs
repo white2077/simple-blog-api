@@ -6,15 +6,8 @@ namespace AspNetCoreRestfulApi.Controllers
 {
     [ApiController]
     [Route("/api/v1/blog")]
-    public class BlogController :ControllerBase
+    public class BlogController(IBlogService blogService) : ControllerBase
     {
-        private readonly IBlogService _blogService;
-
-        public BlogController(IBlogService blogService)
-        {
-            _blogService = blogService;
-        }
-
         [HttpGet("/error")]
         public ActionResult Error()
         {
@@ -24,31 +17,31 @@ namespace AspNetCoreRestfulApi.Controllers
         [HttpGet("all")]
         public ActionResult GetAll(int page, int size)
         {
-            return Ok(_blogService.GetAll(page, size));
+            return Ok(blogService.GetAll(page, size));
         }
 
         [HttpGet("{id}")]
         public ActionResult GetById(int id)
         {
-            return Ok(_blogService.GetById(id));
+            return Ok(blogService.GetById(id));
         }
 
         [HttpGet("user/{userId}")]
         public ActionResult GetBlogsByUserId(int userId, int page, int size)
         {
-            return Ok(_blogService.getBlogsByUserId(userId, page, size));
+            return Ok(blogService.getBlogsByUserId(userId, page, size));
         }
 
         [HttpPost("create")]
         public ActionResult Create(BlogRequestDTO blog)
         {
-            return Ok(_blogService.Create(blog));
+            return Ok(blogService.Create(blog));
         }
 
         [HttpDelete("delete/{id}")]
         public ActionResult Delete(int id)
         {
-            _blogService.Delete(id);
+            blogService.Delete(id);
             return Ok();
         }
 

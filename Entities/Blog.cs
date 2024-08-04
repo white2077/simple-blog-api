@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using AspNetCoreRestfulApi.Core.CoreEntity;
+using AspNetCoreRestfulApi.Entities;
 
 namespace AspNetCoreRestfulApi.Entity
 {

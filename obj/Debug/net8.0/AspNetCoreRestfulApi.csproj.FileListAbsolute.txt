@@ -116,3 +116,6 @@ E:\CProject\AspNetCoreRestfulApi\bin\Debug\net8.0\Microsoft.IdentityModel.Protoc
 E:\CProject\AspNetCoreRestfulApi\bin\Debug\net8.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
 E:\CProject\AspNetCoreRestfulApi\bin\Debug\net8.0\Microsoft.IdentityModel.Tokens.dll
 E:\CProject\AspNetCoreRestfulApi\bin\Debug\net8.0\System.IdentityModel.Tokens.Jwt.dll
+E:\CProject\AspNetCoreRestfulApi\obj\Debug\net8.0\AspNetCoreRestfulApi.sourcelink.json
+E:\CProject\AspNetCoreRestfulApi\bin\Debug\net8.0\libman.json
+E:\CProject\AspNetCoreRestfulApi\bin\Debug\net8.0\AspNetCoreRestfulApi.staticwebassets.runtime.json
