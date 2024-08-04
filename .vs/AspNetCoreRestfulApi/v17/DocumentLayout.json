@@ -1,0 +1,69 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "E:\\CProject\\AspNetCoreRestfulApi\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{F278C6A2-BCC2-403B-AA62-CE0AE3531569}|AspNetCoreRestfulApi.csproj|e:\\cproject\\aspnetcorerestfulapi\\migrations\\20240804071713_add user identity v1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F278C6A2-BCC2-403B-AA62-CE0AE3531569}|AspNetCoreRestfulApi.csproj|solutionrelative:migrations\\20240804071713_add user identity v1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F278C6A2-BCC2-403B-AA62-CE0AE3531569}|AspNetCoreRestfulApi.csproj|e:\\cproject\\aspnetcorerestfulapi\\entities\\user.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F278C6A2-BCC2-403B-AA62-CE0AE3531569}|AspNetCoreRestfulApi.csproj|solutionrelative:entities\\user.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F278C6A2-BCC2-403B-AA62-CE0AE3531569}|AspNetCoreRestfulApi.csproj|e:\\cproject\\aspnetcorerestfulapi\\data\\appdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F278C6A2-BCC2-403B-AA62-CE0AE3531569}|AspNetCoreRestfulApi.csproj|solutionrelative:data\\appdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "20240804071713_Add user identity v1.cs",
+              "DocumentMoniker": "E:\\CProject\\AspNetCoreRestfulApi\\Migrations\\20240804071713_Add user identity v1.cs",
+              "RelativeDocumentMoniker": "Migrations\\20240804071713_Add user identity v1.cs",
+              "ToolTip": "E:\\CProject\\AspNetCoreRestfulApi\\Migrations\\20240804071713_Add user identity v1.cs",
+              "RelativeToolTip": "Migrations\\20240804071713_Add user identity v1.cs",
+              "ViewState": "AQIAAEwAAAAAAAAAAAAQwAkAAAAFAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-08-04T07:17:13.472Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "AppDBContext.cs",
+              "DocumentMoniker": "E:\\CProject\\AspNetCoreRestfulApi\\Data\\AppDBContext.cs",
+              "RelativeDocumentMoniker": "Data\\AppDBContext.cs",
+              "ToolTip": "E:\\CProject\\AspNetCoreRestfulApi\\Data\\AppDBContext.cs",
+              "RelativeToolTip": "Data\\AppDBContext.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAoAAAAgAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-08-04T07:15:23.238Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "User.cs",
+              "DocumentMoniker": "E:\\CProject\\AspNetCoreRestfulApi\\Entities\\User.cs",
+              "RelativeDocumentMoniker": "Entities\\User.cs",
+              "ToolTip": "E:\\CProject\\AspNetCoreRestfulApi\\Entities\\User.cs",
+              "RelativeToolTip": "Entities\\User.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAgAAAAYAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-08-04T07:15:10.026Z"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

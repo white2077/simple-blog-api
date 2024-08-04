@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "Hash": "WqVsV9TTuDrMbwI69jUSDJN81GPg0dlb237tH7bJOAg=",
+  "Source": "AspNetCoreRestfulApi",
+  "BasePath": "_content/AspNetCoreRestfulApi",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}
