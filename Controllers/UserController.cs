@@ -1,7 +1,10 @@
-﻿using AspNetCoreRestfulApi.Core.Page;
+﻿using System.Security.Claims;
+using AspNetCoreRestfulApi.Core.Page;
 using AspNetCoreRestfulApi.Dto.Request;
 using AspNetCoreRestfulApi.Dto.Response;
 using AspNetCoreRestfulApi.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AspNetCoreRestfulApi.Controllers
@@ -33,5 +36,18 @@ namespace AspNetCoreRestfulApi.Controllers
             userService.Delete(id);
             return Ok();
         }
+        [HttpGet("info")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme,Roles = "User")]
+        public ActionResult GetUserInfor()
+        {
+            
+            return Ok(new UserResponseDTO()
+            {
+                Id = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)),
+                Name = User.FindFirstValue(ClaimTypes.Name),
+                Email = User.FindFirstValue(ClaimTypes.Email),
+            });
+        }
+        
     }
 }
