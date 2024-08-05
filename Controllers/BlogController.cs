@@ -20,7 +20,7 @@ namespace AspNetCoreRestfulApi.Controllers
             return Ok(blogService.GetAll(page, size));
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("{id:int}")]
         public ActionResult GetById(int id)
         {
             return Ok(blogService.GetById(id));
@@ -29,11 +29,11 @@ namespace AspNetCoreRestfulApi.Controllers
         [HttpGet("user/{userId}")]
         public ActionResult GetBlogsByUserId(int userId, int page, int size)
         {
-            return Ok(blogService.getBlogsByUserId(userId, page, size));
+            return Ok(blogService.GetBlogsByUserId(userId, page, size));
         }
 
         [HttpPost("create")]
-        public ActionResult Create(BlogRequestDTO blog)
+        public ActionResult Create(BlogRequestDto blog)
         {
             return Ok(blogService.Create(blog));
         }

@@ -10,35 +10,28 @@ using AspNetCoreRestfulApi.Data;
 
 namespace AspNetCoreRestfulApi.Services.Ipml
 {
-    public class PostService : IPostService
+    public class PostService(AppDbContext context) : IPostService
     {
-        private readonly AppDbContext _context;
-
-        public PostService(AppDbContext context)
-        {
-            _context = context;
-        }
-
-        public PostResponseDTO Create(PostRequestDTO entity)
+        public PostResponseDTO Create(PostRequestDto entity)
         {
             var post = new Post
             {
                 Title = entity.Title,
                 Content = entity.Content,
-                Blog = _context.Blogs
+                Blog = context.Blogs
                 .Where(b => b.Id == entity.BlogId)
                 .Include(b => b.User)
                 .FirstOrDefault()??throw new HttpResponseException((int)HttpStatusCode.NotFound, "User Not found"),
                 CreatedAt = DateTime.Now,
             };
 
-            _context.Posts.Add(post);
-            _context.SaveChanges();
+            context.Posts.Add(post);
+            context.SaveChanges();
             return new PostResponseDTO
             {
                 Title = post.Title,
                 Content = post.Content,
-                Blog = new BlogResponseDTO
+                Blog = new BlogResponseDto
                 {
                     Id = post.Blog.Id,
                     Content = post.Blog.Content,
@@ -54,16 +47,16 @@ namespace AspNetCoreRestfulApi.Services.Ipml
 
         public void Delete(int id)
         {
-            _context.Posts.Remove(_context.Posts.Find(id)?? throw new HttpResponseException((int)HttpStatusCode.NotFound, "Not found"));
+            context.Posts.Remove(context.Posts.Find(id)?? throw new HttpResponseException((int)HttpStatusCode.NotFound, "Not found"));
         }
 
         public Pageable<PostResponseDTO> GetAll(int page, int size)
         {
-           return _context.Posts.Select(p => new PostResponseDTO
+           return context.Posts.Select(p => new PostResponseDTO
            {
                Title = p.Title,
                Content = p.Content,
-               Blog = new BlogResponseDTO
+               Blog = new BlogResponseDto
                {
                    Id = p.Blog.Id,
                    Content = p.Blog.Content,
@@ -79,14 +72,14 @@ namespace AspNetCoreRestfulApi.Services.Ipml
 
         public PostResponseDTO GetById(int id)
         {
-           return  _context.Posts.Where(p => p.Id == id)
+           return  context.Posts.Where(p => p.Id == id)
                 .Include(p => p.Blog)
                 .ThenInclude(b => b.User)
                 .Select(p => new PostResponseDTO
             {
                     Title = p.Title,
                     Content = p.Content,
-                    Blog = new BlogResponseDTO
+                    Blog = new BlogResponseDto
                     {
                         Id = p.Blog.Id,
                         Content = p.Blog.Content,
@@ -100,19 +93,19 @@ namespace AspNetCoreRestfulApi.Services.Ipml
             }).FirstOrDefault() ?? throw new HttpResponseException((int)HttpStatusCode.NotFound, "Not found");
         }
 
-        public PostResponseDTO Update(int id, PostRequestDTO entity)
+        public PostResponseDTO Update(int id, PostRequestDto entity)
         {
-            var post = _context.Posts.Find(id)?? throw new HttpResponseException((int)HttpStatusCode.NotFound, "Not found");
-            var blog = _context.Blogs.Find(entity.BlogId)?? throw new HttpResponseException((int)HttpStatusCode.NotFound, "Not found");
+            var post = context.Posts.Find(id)?? throw new HttpResponseException((int)HttpStatusCode.NotFound, "Not found");
+            var blog = context.Blogs.Find(entity.BlogId)?? throw new HttpResponseException((int)HttpStatusCode.NotFound, "Not found");
             post.Title = entity.Title;
             post.Content = entity.Content;
             post.Blog = blog;
-            _context.SaveChanges();
+            context.SaveChanges();
             return new PostResponseDTO
             {
                 Title = post.Title,
                 Content = post.Content,
-                Blog = new BlogResponseDTO
+                Blog = new BlogResponseDto
                 {
                     Id = post.Blog.Id,
                     Content = post.Blog.Content,

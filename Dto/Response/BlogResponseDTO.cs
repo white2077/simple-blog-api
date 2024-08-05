@@ -1,6 +1,6 @@
 ﻿namespace AspNetCoreRestfulApi.Dto.Response
 {
-    public class BlogResponseDTO
+    public class BlogResponseDto
     {
         public int Id { get; set; }
         
@@ -8,11 +8,11 @@
 
         public UserResponseDTO User { get; set; }
 
-        public BlogResponseDTO()
+        public BlogResponseDto()
         {
         }
 
-        public BlogResponseDTO(int id, String content, UserResponseDTO user)
+        public BlogResponseDto(int id, String content, UserResponseDTO user)
         {
             Id = id;
             Content = content;

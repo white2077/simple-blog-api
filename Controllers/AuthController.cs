@@ -1,35 +1,25 @@
 ﻿using AspNetCoreRestfulApi.Dto.Request;
-using AspNetCoreRestfulApi.Entities;
-using AspNetCoreRestfulApi.Entity;
-using Microsoft.AspNetCore.Identity;
+using AspNetCoreRestfulApi.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AspNetCoreRestfulApi.Controllers;
 
 [ApiController]
 [Route("/api/v1/auth")]
-public class AuthController(UserManager<User> userManager) : ControllerBase
+public class AuthController(IAuthService authService) : ControllerBase
 {
     [HttpPost("register")]
-    public async Task<ActionResult<User>> Register(RegisterRequestDto user)
+    public async Task<ActionResult> Register(RegisterRequestDto user)
     {
-        var userEntity = new User()
-        {
-            Name = user.Username,
-            UserName = user.Username,
-            Email = user.Email
-        };
-
-        var result = await userManager.CreateAsync(userEntity, user.Password);
-
-        if (result.Succeeded)
-        {
-            var roleResult = await userManager.AddToRoleAsync(userEntity, "user");
-            return Ok(user);
-        }
-        else
-        {
-            return BadRequest(result.Errors);
-        }
+        var registeredUser = await authService.Register(user);
+        return Ok(registeredUser);
     }
+    
+    [HttpPost("login")]
+    public async Task<ActionResult> Login(LoginRequestDto user)
+    {
+        var loggedUser = await authService.Login(user);
+        return Ok(loggedUser);
+    }
+    
 }

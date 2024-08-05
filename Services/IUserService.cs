@@ -3,7 +3,7 @@ using AspNetCoreRestfulApi.Dto.Response;
 
 namespace AspNetCoreRestfulApi.Services
 {
-    public interface IUserService : ISevice<UserRequestDTO,UserResponseDTO, int>
+    public interface IUserService : ISevice<UserRequestDto,UserResponseDTO, int>
     {
     }
 }

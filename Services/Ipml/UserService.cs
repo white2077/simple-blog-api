@@ -42,7 +42,7 @@ namespace AspNetCoreRestfulApi.Services.Ipml
             };
         }
 
-        public  UserResponseDTO Create(UserRequestDTO entity)
+        public  UserResponseDTO Create(UserRequestDto entity)
         {
             var user = new User
             {
@@ -61,7 +61,7 @@ namespace AspNetCoreRestfulApi.Services.Ipml
             };
         }
 
-        public UserResponseDTO Update(int id, UserRequestDTO entity)
+        public UserResponseDTO Update(int id, UserRequestDto entity)
         {
            var user = _context.User
                     .Where(u => u.Id == id)

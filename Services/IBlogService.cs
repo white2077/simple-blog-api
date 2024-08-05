@@ -4,8 +4,8 @@ using AspNetCoreRestfulApi.Dto.Response;
 
 namespace AspNetCoreRestfulApi.Services
 {
-    public interface IBlogService :ISevice<BlogRequestDTO, BlogResponseDTO, int>
+    public interface IBlogService :ISevice<BlogRequestDto, BlogResponseDto, int>
     {
-        Pageable<BlogResponseDTO> getBlogsByUserId(int userId,int page,int size);
+        Pageable<BlogResponseDto> GetBlogsByUserId(int userId,int page,int size);
     }
 }

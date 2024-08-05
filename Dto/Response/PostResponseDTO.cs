@@ -4,9 +4,9 @@
     {
         public string Title { get; set; }
         public string Content { get; set; }
-        public BlogResponseDTO Blog { get; set; }
+        public BlogResponseDto Blog { get; set; }
 
-        public PostResponseDTO(string title, string content, BlogResponseDTO blog)
+        public PostResponseDTO(string title, string content, BlogResponseDto blog)
         {
             Title = title;
             Content = content;

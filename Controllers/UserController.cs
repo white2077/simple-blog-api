@@ -22,7 +22,7 @@ namespace AspNetCoreRestfulApi.Controllers
         }
         
         [HttpPut("update/{id}")]
-        public ActionResult<UserResponseDTO> Update(int id, UserRequestDTO user)
+        public ActionResult<UserResponseDTO> Update(int id, UserRequestDto user)
         {
             return Ok(userService.Update(id, user));
         }

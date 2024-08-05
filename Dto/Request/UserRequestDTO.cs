@@ -1,16 +1,9 @@
 ﻿namespace AspNetCoreRestfulApi.Dto.Request
 {
-    public class UserRequestDTO
+    public class UserRequestDto(string name, string email)
     {
-        public String Name { get; set; }
+        public String Name { get; set; } = name;
 
-        public String Email { get; set; }
-
-        public UserRequestDTO(string name, string email)
-        {
-            Name = name;
-            Email = email;
-        }
-
+        public String Email { get; set; } = email;
     }
 }
