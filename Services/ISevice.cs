@@ -1,4 +1,5 @@
 ﻿using AspNetCoreRestfulApi.Core.Page;
+using AspNetCoreRestfulApi.Dto.Response;
 
 namespace AspNetCoreRestfulApi.Services
 {
@@ -7,7 +8,7 @@ namespace AspNetCoreRestfulApi.Services
         public Pageable<RES> GetAll(int page,int size);
         public RES GetById(K id);
         public RES Create(REQ entity);
-        public RES Update(K id,REQ entity);
+        public RES Update(K id, REQ entity);
         public void Delete(K id);
     }
 }

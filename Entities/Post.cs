@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using AspNetCoreRestfulApi.Core.CoreEntity;
+using AspNetCoreRestfulApi.Entities;
 
 namespace AspNetCoreRestfulApi.Entity
 {
@@ -16,6 +17,9 @@ namespace AspNetCoreRestfulApi.Entity
 
         [ForeignKey("blog_id")]
         public Blog Blog { get; set; }
+        
+        [ForeignKey("user_id")]
+        public User User { get; set; }
 
         public Post(string title, string content, Blog blog)
         {

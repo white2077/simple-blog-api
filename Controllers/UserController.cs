@@ -13,23 +13,26 @@ namespace AspNetCoreRestfulApi.Controllers
     [Route("/api/v1/user")]
     public class UserController(IUserService userService) : ControllerBase
     {
-        [HttpGet("all")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme,Roles = "Admin")]
+        [HttpGet("admin/all-users")]
         public ActionResult<Pageable<UserResponseDTO>> GetAll(int page, int size)
         {
             return Ok(userService.GetAll(page, size));
         }
+        
         [HttpGet("{id}")]
         public ActionResult<UserResponseDTO> GetById(int id)
         {
             return Ok(userService.GetById(id));
         }
         
-        [HttpPut("update/{id}")]
-        public ActionResult<UserResponseDTO> Update(int id, UserRequestDto user)
+        [HttpPut("update")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme,Roles = "User,Admin")]
+        public ActionResult<UserResponseDTO> Update(UserRequestDto user)
         {
-            return Ok(userService.Update(id, user));
+            return Ok(userService.Update( int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)), user));
         }
-
+        
         [HttpDelete("delete/{id}")]
         public ActionResult Delete(int id)
         {
@@ -37,17 +40,16 @@ namespace AspNetCoreRestfulApi.Controllers
             return Ok();
         }
         [HttpGet("info")]
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme,Roles = "User")]
-        public ActionResult GetUserInfor()
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme,Roles = "User,Admin")]
+        public ActionResult<UserResponseDTO> GetUserInfor()
         {
-            
             return Ok(new UserResponseDTO()
             {
                 Id = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)),
                 Name = User.FindFirstValue(ClaimTypes.Name),
                 Email = User.FindFirstValue(ClaimTypes.Email),
+                Role = User.FindFirstValue(ClaimTypes.Role)
             });
         }
-        
     }
 }

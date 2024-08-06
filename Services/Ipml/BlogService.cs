@@ -12,28 +12,10 @@ namespace AspNetCoreRestfulApi.Services.Ipml
 {
     public class BlogService(AppDbContext context) : IBlogService
     {
-        public BlogResponseDto Create(BlogRequestDto entity)
-        {
-            var user = context.User.Find(entity.UserId) ?? throw new HttpResponseException((int)HttpStatusCode.NotFound, "Not found");
-            var blog = new Blog
-            {
-                Content = entity.Content,
-                Title = entity.Title,
-                User = user,
-            };
-            context.Blogs.Add(blog);
-            context.SaveChanges();
-            return new BlogResponseDto
-            {
-                Id = blog.Id,
-                Content = blog.Content,
-                User = new UserResponseDTO { Id = blog.User.Id, Name = blog.User.Name, Email = blog.User.Email }
-            };
-        }
-
         public void Delete(int id)
         {
             context.Blogs.Remove(context.Blogs.Find(id)?? throw new HttpResponseException((int)HttpStatusCode.NotFound,"Not found"));
+            context.SaveChanges();
         }
 
         public Pageable<BlogResponseDto> GetAll(int page, int size)
@@ -60,6 +42,26 @@ namespace AspNetCoreRestfulApi.Services.Ipml
               }).ToPageable(page, size);
         }
 
+        public BlogResponseDto CreateBlog(BlogRequestDto entity, int userId)
+        {
+            var user = context.User.Find(userId)?? throw new HttpResponseException((int)HttpStatusCode.NotFound, "Not found");
+            var blog = new Blog
+            {
+                Content = entity.Content,
+                Title = entity.Title,
+                User = user
+            };
+            context.Blogs.Add(blog);
+            context.SaveChanges();
+            return new BlogResponseDto
+            {
+                Id = blog.Id,
+                Title = blog.Title,
+                Content = blog.Content,
+                User = new UserResponseDTO { Id = blog.User.Id, Name = blog.User.Name, Email = blog.User.Email }
+            };
+        }
+
         public BlogResponseDto GetById(int id)
         {
            var blog = context.Blogs.Where(b => b.Id == id)
@@ -74,20 +76,25 @@ namespace AspNetCoreRestfulApi.Services.Ipml
             };
         }
 
+        public BlogResponseDto Create(BlogRequestDto entity)
+        {
+            throw new NotImplementedException();
+        }
+        
         public BlogResponseDto Update(int id, BlogRequestDto entity)
         {
-            var User = context.User.Find(entity.UserId)??
-               throw new HttpResponseException((int)HttpStatusCode.NotFound, "Not found"); 
-            var Blog = context.Blogs.Find(id)?? throw new HttpResponseException((int)HttpStatusCode.NotFound, "Not found");
-            Blog.Content = entity.Content;
-            Blog.Title = entity.Title;
-            Blog.User = User;
+            var blog = context.Blogs.Where(blog => blog.Id == id)
+                .Include(blog => blog.User)
+                .FirstOrDefault()?? throw new HttpResponseException((int)HttpStatusCode.NotFound, "Not found");
+            blog.Content = entity.Content;
+            blog.Title = entity.Title;
             context.SaveChanges();
             return new BlogResponseDto
             {
-                Id = Blog.Id,
-                Content = Blog.Content,
-                User = new UserResponseDTO { Id = Blog.User.Id, Name = Blog.User.Name, Email = Blog.User.Email }
+                Id = blog.Id,
+                Content = blog.Content,
+                Title = blog.Title,
+                User = new UserResponseDTO { Id = blog.User.Id, Name = blog.User.Name, Email = blog.User.Email }
             };
 
         }

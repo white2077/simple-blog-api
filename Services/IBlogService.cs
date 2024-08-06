@@ -7,5 +7,7 @@ namespace AspNetCoreRestfulApi.Services
     public interface IBlogService :ISevice<BlogRequestDto, BlogResponseDto, int>
     {
         Pageable<BlogResponseDto> GetBlogsByUserId(int userId,int page,int size);
+        public BlogResponseDto CreateBlog(BlogRequestDto entity, int userId);
+        
     }
 }

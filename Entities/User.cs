@@ -21,7 +21,9 @@ namespace AspNetCoreRestfulApi.Entities
         public DateTime UpdatedAt { get; set; }
 
         public ICollection<Blog> Blogs { get; set; }
-
+        
+        public ICollection<Post> Posts { get; set; }
+        
         public User(string name, string email):base()
         {
             Name = name;

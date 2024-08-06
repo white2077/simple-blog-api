@@ -7,32 +7,28 @@ using AspNetCoreRestfulApi.Utils;
 using System.Net;
 using AspNetCoreRestfulApi.Data;
 using AspNetCoreRestfulApi.Entities;
+using Microsoft.AspNetCore.Identity;
 
 namespace AspNetCoreRestfulApi.Services.Ipml
 {
-    public class UserService : IUserService
+    public class UserService(AppDbContext context,SignInManager<User> signInManager) : IUserService
     {
-        private readonly AppDbContext _context;
-
-        public UserService(AppDbContext context)
-        {
-            _context = context;
-        }
-
         public  Pageable<UserResponseDTO> GetAll(int page, int size)
         {
-            return _context.User
+            Pageable<UserResponseDTO>  pageable = context.User
               .Select(u => new UserResponseDTO
               {
                   Id = u.Id,
                   Name = u.Name,
-                  Email = u.Email,
+                  Email = u.Email
               }).ToPageable(page, size);
+
+            return null;
         }
 
         public  UserResponseDTO GetById(int id)
         {
-            var user =  _context.User.Find(id)??throw new HttpResponseException(404,"That entity not found for abc =)))) ");
+            var user =  context.User.Find(id)??throw new HttpResponseException(404,"That entity not found for abc =)))) ");
 
             return new UserResponseDTO
             {
@@ -50,8 +46,8 @@ namespace AspNetCoreRestfulApi.Services.Ipml
                 Email = entity.Email,
             };
 
-            _context.User.Add(user);
-            _context.SaveChanges();
+            context.User.Add(user);
+            context.SaveChanges();
 
             return new UserResponseDTO
             {
@@ -63,14 +59,13 @@ namespace AspNetCoreRestfulApi.Services.Ipml
 
         public UserResponseDTO Update(int id, UserRequestDto entity)
         {
-           var user = _context.User
-                    .Where(u => u.Id == id)
-
-                    .FirstOrDefault();
+           var user = context.User
+               .FirstOrDefault(u => u.Id == id) ?? 
+                      throw new HttpResponseException((int)HttpStatusCode.NotFound, "Not found");
             user.Name = entity.Name;
             user.Email = entity.Email;
             user.UpdatedAt = DateTime.Now;
-            _context.SaveChanges();
+            context.SaveChanges();
             return new UserResponseDTO
             {
                 Id = user.Id,
@@ -81,7 +76,37 @@ namespace AspNetCoreRestfulApi.Services.Ipml
 
         public void Delete(int id)
         {
-            _context.User.Remove(_context.User.Find(id)?? throw new HttpResponseException((int)HttpStatusCode.NotFound, "Not found"));
+            context.User.Remove(context.User.Find(id)?? throw new HttpResponseException((int)HttpStatusCode.NotFound, "Not found"));
+        }
+
+        public BlogResponseDto CreateBlog(BlogRequestDto entity, int userId)
+        {
+            var user = context.User.Find(userId) ?? throw new HttpResponseException((int)HttpStatusCode.NotFound, "Not found");
+            var role =signInManager.UserManager.GetRolesAsync(user).Result[0];
+           
+            var blog = new Blog
+            {
+                Title = entity.Title,
+                Content = entity.Content,
+                User = user
+            };
+            
+            context.Blogs.Add(blog);
+            context.SaveChanges();
+            
+            return new BlogResponseDto()
+            {
+                Id = blog.Id,
+                Title = blog.Title,
+                Content = blog.Content,
+                User = new UserResponseDTO()
+                {
+                    Id = user.Id,
+                    Name = user.Name,
+                    Email = user.Email,
+                    Role = role
+                }
+            };
         }
     }
 }

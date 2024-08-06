@@ -2,7 +2,7 @@
 
 namespace AspNetCoreRestfulApi.Dto.Request
 {
-    public class BlogRequestDto(string title, string content, int userId)
+    public class BlogRequestDto(string title, string content)
     {
         [Required]
         [MaxLength(100)]
@@ -10,8 +10,6 @@ namespace AspNetCoreRestfulApi.Dto.Request
         public String Title { get; set; } = title;
 
         public String Content { get; set; } = content;
-
-        [Required]
-        public int UserId { get; set; } = userId;
+        
     }
 }
