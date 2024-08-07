@@ -23,10 +23,10 @@ public class AuthService(UserManager<User> userManager,ITokenService tokenServic
 
         if (result.Succeeded)
         {
-            var roleResult = await userManager.AddToRoleAsync(userEntity, "Admin");
+            var roleResult = await userManager.AddToRoleAsync(userEntity, "User");
             return new TokenResponseDto()
             {
-                AccessToken = tokenService.GenerateAccessToken(userEntity, ["Admin"]),
+                AccessToken = tokenService.GenerateAccessToken(userEntity, ["User"]),
                 RefreshToken = tokenService.GenerateRefreshToken()
             };
         }

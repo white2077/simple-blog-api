@@ -20,7 +20,6 @@ public class Comment : BaseEntity
     public  string Content { get; set; }
     
     [ForeignKey("comment_id")]
-    [JsonIgnore]
     public Comment? ParentComment { get; set; }
     public int? comment_id { get; set; }
     

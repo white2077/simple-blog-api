@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("AspNetCoreRestfulApi")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+3152a1c6cb32ca7a08cc932bcf275317e03fd152")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+78f276a03c7c2a4a5a00ced31e55a36287a34d73")]
 [assembly: System.Reflection.AssemblyProductAttribute("AspNetCoreRestfulApi")]
 [assembly: System.Reflection.AssemblyTitleAttribute("AspNetCoreRestfulApi")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

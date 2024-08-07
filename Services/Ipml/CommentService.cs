@@ -68,7 +68,8 @@ public class CommentService(AppDbContext context) : ICommentService
             User = context.Users.Find(userId),
             Content = comment.Content,
             post_id = comment.PostId,
-            comment_id = comment.ParentId
+            comment_id = comment.ParentId,
+            Status = true,CreatedAt = DateTime.Today
         };
         context.Comments.Add(commentEntity);
         context.SaveChanges();
