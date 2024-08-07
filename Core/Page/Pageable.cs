@@ -20,5 +20,8 @@
             this.Items = items;
         }
 
+        public Pageable()
+        {
+        }
     }
 }

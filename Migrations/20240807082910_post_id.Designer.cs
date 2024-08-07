@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AspNetCoreRestfulApi.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240806040649_update-user-role")]
-    partial class updateuserrole
+    [Migration("20240807082910_post_id")]
+    partial class post_id
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -25,7 +25,7 @@ namespace AspNetCoreRestfulApi.Migrations
 
             MySqlModelBuilderExtensions.AutoIncrementColumns(modelBuilder);
 
-            modelBuilder.Entity("AspNetCoreRestfulApi.Entities.Role", b =>
+            modelBuilder.Entity("AspNetCoreRestfulApi.Entities.Comment", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -33,25 +33,42 @@ namespace AspNetCoreRestfulApi.Migrations
 
                     MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("ConcurrencyStamp")
-                        .IsConcurrencyToken()
+                    b.Property<string>("Content")
+                        .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<string>("Name")
-                        .HasMaxLength(256)
-                        .HasColumnType("varchar(256)");
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime(6)")
+                        .HasColumnName("created_at");
 
-                    b.Property<string>("NormalizedName")
-                        .HasMaxLength(256)
-                        .HasColumnType("varchar(256)");
+                    b.Property<int>("PostId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("Status")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime(6)")
+                        .HasColumnName("updated_at");
+
+                    b.Property<int?>("comment_id")
+                        .HasColumnType("int");
+
+                    b.Property<int>("post_id")
+                        .HasColumnType("int");
+
+                    b.Property<int>("user_id")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("NormalizedName")
-                        .IsUnique()
-                        .HasDatabaseName("RoleNameIndex");
+                    b.HasIndex("PostId");
 
-                    b.ToTable("AspNetRoles", (string)null);
+                    b.HasIndex("comment_id");
+
+                    b.HasIndex("user_id");
+
+                    b.ToTable("comment");
                 });
 
             modelBuilder.Entity("AspNetCoreRestfulApi.Entities.User", b =>
@@ -156,7 +173,7 @@ namespace AspNetCoreRestfulApi.Migrations
                         .HasColumnType("longtext")
                         .HasColumnName("title");
 
-                    b.Property<DateTime>("UpdatedAt")
+                    b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime(6)")
                         .HasColumnName("updated_at");
 
@@ -192,7 +209,7 @@ namespace AspNetCoreRestfulApi.Migrations
                         .HasColumnType("NVARCHAR(255)")
                         .HasColumnName("title");
 
-                    b.Property<DateTime>("UpdatedAt")
+                    b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime(6)")
                         .HasColumnName("updated_at");
 
@@ -209,6 +226,35 @@ namespace AspNetCoreRestfulApi.Migrations
                     b.HasIndex("user_id");
 
                     b.ToTable("Post");
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole<int>", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Name")
+                        .HasMaxLength(256)
+                        .HasColumnType("varchar(256)");
+
+                    b.Property<string>("NormalizedName")
+                        .HasMaxLength(256)
+                        .HasColumnType("varchar(256)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("NormalizedName")
+                        .IsUnique()
+                        .HasDatabaseName("RoleNameIndex");
+
+                    b.ToTable("AspNetRoles", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
@@ -288,19 +334,9 @@ namespace AspNetCoreRestfulApi.Migrations
                     b.Property<int>("RoleId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("RoleId1")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("UserId1")
-                        .HasColumnType("int");
-
                     b.HasKey("UserId", "RoleId");
 
                     b.HasIndex("RoleId");
-
-                    b.HasIndex("RoleId1");
-
-                    b.HasIndex("UserId1");
 
                     b.ToTable("AspNetUserRoles", (string)null);
                 });
@@ -322,6 +358,31 @@ namespace AspNetCoreRestfulApi.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens", (string)null);
+                });
+
+            modelBuilder.Entity("AspNetCoreRestfulApi.Entities.Comment", b =>
+                {
+                    b.HasOne("AspNetCoreRestfulApi.Entity.Post", "Post")
+                        .WithMany()
+                        .HasForeignKey("PostId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("AspNetCoreRestfulApi.Entities.Comment", "ParentComment")
+                        .WithMany("ChildrenComments")
+                        .HasForeignKey("comment_id");
+
+                    b.HasOne("AspNetCoreRestfulApi.Entities.User", "User")
+                        .WithMany()
+                        .HasForeignKey("user_id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ParentComment");
+
+                    b.Navigation("Post");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("AspNetCoreRestfulApi.Entity.Blog", b =>
@@ -356,7 +417,7 @@ namespace AspNetCoreRestfulApi.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
                 {
-                    b.HasOne("AspNetCoreRestfulApi.Entities.Role", null)
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole<int>", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -383,25 +444,17 @@ namespace AspNetCoreRestfulApi.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<int>", b =>
                 {
-                    b.HasOne("AspNetCoreRestfulApi.Entities.Role", null)
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole<int>", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.HasOne("AspNetCoreRestfulApi.Entities.Role", null)
-                        .WithMany("UserRoles")
-                        .HasForeignKey("RoleId1");
 
                     b.HasOne("AspNetCoreRestfulApi.Entities.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.HasOne("AspNetCoreRestfulApi.Entities.User", null)
-                        .WithMany("UserRoles")
-                        .HasForeignKey("UserId1");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<int>", b =>
@@ -413,9 +466,9 @@ namespace AspNetCoreRestfulApi.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("AspNetCoreRestfulApi.Entities.Role", b =>
+            modelBuilder.Entity("AspNetCoreRestfulApi.Entities.Comment", b =>
                 {
-                    b.Navigation("UserRoles");
+                    b.Navigation("ChildrenComments");
                 });
 
             modelBuilder.Entity("AspNetCoreRestfulApi.Entities.User", b =>
@@ -423,8 +476,6 @@ namespace AspNetCoreRestfulApi.Migrations
                     b.Navigation("Blogs");
 
                     b.Navigation("Posts");
-
-                    b.Navigation("UserRoles");
                 });
 #pragma warning restore 612, 618
         }

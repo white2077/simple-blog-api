@@ -31,6 +31,7 @@ builder.Services.AddSwaggerGen(sw =>
             }
         }
     );
+    
     sw.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
         Name = "Authorization",
@@ -70,6 +71,7 @@ builder.Services.AddScoped<IBlogService, BlogService>();
 builder.Services.AddScoped<IPostService, PostService>();
 builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<ICommentService, CommentService>();
 
 // Add Identity
 builder.Services.AddIdentity<User, IdentityRole<int>>(op =>

@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AspNetCoreRestfulApi.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240805171738_user_can_crate_post")]
-    partial class user_can_crate_post
+    [Migration("20240806155305_re-database")]
+    partial class redatabase
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,6 +24,46 @@ namespace AspNetCoreRestfulApi.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
             MySqlModelBuilderExtensions.AutoIncrementColumns(modelBuilder);
+
+            modelBuilder.Entity("AspNetCoreRestfulApi.Entities.Comment", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime(6)")
+                        .HasColumnName("created_at");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime(6)")
+                        .HasColumnName("updated_at");
+
+                    b.Property<int>("comment_id")
+                        .HasColumnType("int");
+
+                    b.Property<string>("content")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<int>("post_id")
+                        .HasColumnType("int");
+
+                    b.Property<int>("user_id")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("comment_id");
+
+                    b.HasIndex("post_id");
+
+                    b.HasIndex("user_id");
+
+                    b.ToTable("comment");
+                });
 
             modelBuilder.Entity("AspNetCoreRestfulApi.Entities.User", b =>
                 {
@@ -314,6 +354,33 @@ namespace AspNetCoreRestfulApi.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("AspNetCoreRestfulApi.Entities.Comment", b =>
+                {
+                    b.HasOne("AspNetCoreRestfulApi.Entities.Comment", "ParentComment")
+                        .WithMany("ChildrenComments")
+                        .HasForeignKey("comment_id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("AspNetCoreRestfulApi.Entity.Post", "Post")
+                        .WithMany()
+                        .HasForeignKey("post_id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("AspNetCoreRestfulApi.Entities.User", "User")
+                        .WithMany()
+                        .HasForeignKey("user_id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ParentComment");
+
+                    b.Navigation("Post");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("AspNetCoreRestfulApi.Entity.Blog", b =>
                 {
                     b.HasOne("AspNetCoreRestfulApi.Entities.User", "User")
@@ -393,6 +460,11 @@ namespace AspNetCoreRestfulApi.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("AspNetCoreRestfulApi.Entities.Comment", b =>
+                {
+                    b.Navigation("ChildrenComments");
                 });
 
             modelBuilder.Entity("AspNetCoreRestfulApi.Entities.User", b =>

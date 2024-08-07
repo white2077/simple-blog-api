@@ -13,5 +13,7 @@ namespace AspNetCoreRestfulApi.Data
         public DbSet<User> User { get; set; }
         public DbSet<Blog> Blogs { get; set; }
         public DbSet<Post> Posts { get; set; }
+        
+        public DbSet<Comment> Comments { get; set; }
     }
 }

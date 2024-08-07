@@ -5,7 +5,7 @@
 namespace AspNetCoreRestfulApi.Migrations
 {
     /// <inheritdoc />
-    public partial class test : Migration
+    public partial class add_fk_1 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

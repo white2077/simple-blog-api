@@ -24,6 +24,7 @@ namespace AspNetCoreRestfulApi.Services.Ipml
               .Select(u => new BlogResponseDto
               {
                   Id = u.Id,
+                  Title = u.Title,
                   Content = u.Content,
                   User = new UserResponseDTO { Id = u.User.Id, Name = u.User.Name, Email = u.User.Email }
               }).ToPageable(page, size);
