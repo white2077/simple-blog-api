@@ -1,14 +1,18 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
+using System.Net;
 using System.Security.Claims;
 using System.Text;
+using AspNetCoreRestfulApi.Core.CustomException;
+using AspNetCoreRestfulApi.Data;
 using AspNetCoreRestfulApi.Entities;
 using Microsoft.IdentityModel.Tokens;
 
 namespace AspNetCoreRestfulApi.Services.Ipml;
 
-public class TokenService(IConfiguration config) : ITokenService
+public class TokenService(IConfiguration config,AppDbContext context) : ITokenService
 {
-    private readonly SymmetricSecurityKey _symmetricSecurityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["Jwt:Key"] ?? string.Empty));
+    private readonly SymmetricSecurityKey _symmetricSecurityKey = 
+        new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["Jwt:Key"] ?? string.Empty));
     
 
     public string GenerateAccessToken(User user,IList<string> userRoles)
@@ -43,4 +47,42 @@ public class TokenService(IConfiguration config) : ITokenService
     {
         return JwtRegisteredClaimNames.Jti + Guid.NewGuid().ToString();
     }
+    
+    public string RevokeToken(string accessToken)
+    {
+        ValidateToken(accessToken);
+        context.TokenBlackLists.Add(new TokenBlackList()
+        {
+            Token = accessToken
+        });
+        context.SaveChanges();
+        return accessToken + " revoked";
+    }
+
+    public bool IsTokenBlacklisted(string accessToken)
+    {
+        return context.TokenBlackLists.Any(t => t.Token == accessToken);
+    }
+
+    private bool ValidateToken(string accessToken)
+    {
+        var tokenHandler = new JwtSecurityTokenHandler();
+        try
+        {
+            tokenHandler.ValidateToken(accessToken, new TokenValidationParameters
+            {
+                ValidateIssuer = true,
+                ValidateAudience = true,
+                ValidIssuer = config["Jwt:Issuer"],
+                ValidAudience = config["Jwt:Audience"],
+                IssuerSigningKey = _symmetricSecurityKey
+            }, out var validatedToken);
+            return true;
+        }
+        catch (Exception e)
+        {
+            throw new HttpResponseException((int)HttpStatusCode.Unauthorized,"Token is invalid");
+        }
+    }
+    
 }

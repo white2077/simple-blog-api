@@ -15,7 +15,7 @@ namespace AspNetCoreRestfulApi.Services.Ipml
     {
         public  Pageable<UserResponseDTO> GetAll(int page, int size)
         {
-            Pageable<UserResponseDTO>  pageable = context.User
+            Pageable<UserResponseDTO>  pageable = context.Users
               .Select(u => new UserResponseDTO
               {
                   Id = u.Id,
@@ -28,7 +28,7 @@ namespace AspNetCoreRestfulApi.Services.Ipml
 
         public  UserResponseDTO GetById(int id)
         {
-            var user =  context.User.Find(id)??throw new HttpResponseException(404,"That entity not found for abc =)))) ");
+            var user =  context.Users.Find(id)??throw new HttpResponseException(404,"That entity not found for abc =)))) ");
 
             return new UserResponseDTO
             {
@@ -46,7 +46,7 @@ namespace AspNetCoreRestfulApi.Services.Ipml
                 Email = entity.Email,
             };
 
-            context.User.Add(user);
+            context.Users.Add(user);
             context.SaveChanges();
 
             return new UserResponseDTO
@@ -59,7 +59,7 @@ namespace AspNetCoreRestfulApi.Services.Ipml
 
         public UserResponseDTO Update(int id, UserRequestDto entity)
         {
-           var user = context.User
+           var user = context.Users
                .FirstOrDefault(u => u.Id == id) ?? 
                       throw new HttpResponseException((int)HttpStatusCode.NotFound, "Not found");
             user.Name = entity.Name;
@@ -76,12 +76,12 @@ namespace AspNetCoreRestfulApi.Services.Ipml
 
         public void Delete(int id)
         {
-            context.User.Remove(context.User.Find(id)?? throw new HttpResponseException((int)HttpStatusCode.NotFound, "Not found"));
+            context.Users.Remove(context.Users.Find(id)?? throw new HttpResponseException((int)HttpStatusCode.NotFound, "Not found"));
         }
 
         public BlogResponseDto CreateBlog(BlogRequestDto entity, int userId)
         {
-            var user = context.User.Find(userId) ?? throw new HttpResponseException((int)HttpStatusCode.NotFound, "Not found");
+            var user = context.Users.Find(userId) ?? throw new HttpResponseException((int)HttpStatusCode.NotFound, "Not found");
             var role =signInManager.UserManager.GetRolesAsync(user).Result[0];
            
             var blog = new Blog

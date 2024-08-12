@@ -53,4 +53,9 @@ public class AuthService(UserManager<User> userManager,ITokenService tokenServic
         
         return tokenResponseDto;
     }
+
+    public string Logout(string accessToken)
+    {
+        return tokenService.RevokeToken(accessToken);
+    }
 }

@@ -14,7 +14,6 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllers();
-builder.Services.AddSignalR();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -72,6 +71,9 @@ builder.Services.AddScoped<IPostService, PostService>();
 builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<ICommentService, CommentService>();
+builder.Services.AddScoped<IChatService, ChatService>();
+builder.Services.AddScoped<IBlacklistService, BlacklistService>();
+
 
 // Add Identity
 builder.Services.AddIdentity<User, IdentityRole<int>>(op =>
@@ -116,20 +118,33 @@ builder.Services.AddAuthentication(op =>
                 return Task.CompletedTask;
             }
         };
+        options.Events = new JwtBearerEvents
+        {
+            OnMessageReceived = context =>
+            {
+                var accessToken = context.Request.Query["access_token"];
+                var path = context.HttpContext.Request.Path;
+                if (!string.IsNullOrEmpty(accessToken) && path.StartsWithSegments("/chat"))
+                {
+                    context.Token = accessToken;
+                }
+                return Task.CompletedTask;
+            }
+        };
     });
 
+builder.Services.AddSignalR();
 
 //Config cors
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowSpecificOrigin",
         policy =>
-        {
-            policy.WithOrigins("http://127.0.0.1:5500", "https://8327-1-53-185-173.ngrok-free.app")
+
+            policy.WithOrigins("http://127.0.0.1:5500")
                 .AllowAnyHeader()
                 .AllowAnyMethod()
-                .AllowCredentials();
-        });
+                .AllowCredentials());
 });
 
 //Rest Controller Advice
@@ -141,7 +156,6 @@ builder.Services.AddControllers(options =>
 var app = builder.Build();
 
 //WebSocket Server
-app.MapHub<NotificationService>("/notification");
 
 
 // Configure the HTTP request pipeline.
@@ -153,12 +167,13 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.UseAuthentication();
+app.UseCors("AllowSpecificOrigin");
+app.UseRouting();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
-app.UseCors("AllowSpecificOrigin");
-
+app.MapHub<ChatHub>("/chat");
 app.MapControllers();
 
 app.Run();

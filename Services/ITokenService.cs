@@ -8,4 +8,8 @@ public interface ITokenService
     
     public string GenerateRefreshToken();
     
+    public string RevokeToken(string accessToken);
+    
+    public bool IsTokenBlacklisted(string accessToken);
+    
 }

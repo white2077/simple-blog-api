@@ -9,4 +9,6 @@ public interface IAuthService
     
     public Task<TokenResponseDto> Login(LoginRequestDto loginRequestDto);
     
+    public string Logout(string accessToken);
+    
 }

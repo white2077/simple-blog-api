@@ -10,10 +10,11 @@ namespace AspNetCoreRestfulApi.Data
         : IdentityDbContext<User, IdentityRole<int>,int>(options)
     {
         // Maping entity to table
-        public DbSet<User> User { get; set; }
         public DbSet<Blog> Blogs { get; set; }
         public DbSet<Post> Posts { get; set; }
         
+        public DbSet<TokenBlackList> TokenBlackLists { get; set; }
         public DbSet<Comment> Comments { get; set; }
+        public DbSet<GlobalChat> GlobalChats { get; set; }
     }
 }

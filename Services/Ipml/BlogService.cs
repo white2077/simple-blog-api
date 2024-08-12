@@ -45,7 +45,7 @@ namespace AspNetCoreRestfulApi.Services.Ipml
 
         public BlogResponseDto CreateBlog(BlogRequestDto entity, int userId)
         {
-            var user = context.User.Find(userId)?? throw new HttpResponseException((int)HttpStatusCode.NotFound, "Not found");
+            var user = context.Users.Find(userId)?? throw new HttpResponseException((int)HttpStatusCode.NotFound, "Not found");
             var blog = new Blog
             {
                 Content = entity.Content,

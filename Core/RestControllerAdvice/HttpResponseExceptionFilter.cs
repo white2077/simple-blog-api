@@ -3,14 +3,26 @@ using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Mvc;
 using AspNetCoreRestfulApi.Core.BaseModel;
 using System.Net;
+using AspNetCoreRestfulApi.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace AspNetCoreRestfulApi.Core.RestExceptionAdvice
 {
-    public class HttpResponseExceptionFilter : IActionFilter, IOrderedFilter
+    public class HttpResponseExceptionFilter(AppDbContext dbContext) : IActionFilter, IOrderedFilter
     {
         public int Order => int.MaxValue - 10;
 
         public void OnActionExecuting(ActionExecutingContext context) {
+            var token = context.HttpContext.Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
+
+            if (dbContext.TokenBlackLists.AnyAsync(x => x.Token == token).Result)
+            {
+                var responseError = new ResponseError(HttpStatusCode.Unauthorized, "Token is blacklisted");
+                context.Result = new ObjectResult(responseError)
+                {
+                    StatusCode = (int)HttpStatusCode.Unauthorized
+                };
+            }
         }
 
         public void OnActionExecuted(ActionExecutedContext context)

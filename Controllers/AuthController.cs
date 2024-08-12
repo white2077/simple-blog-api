@@ -6,7 +6,7 @@ namespace AspNetCoreRestfulApi.Controllers;
 
 [ApiController]
 [Route("/api/v1/auth")]
-public class AuthController(IAuthService authService) : ControllerBase
+public class AuthController(IAuthService authService,ITokenService tokenService) : ControllerBase
 {
     [HttpPost("register")]
     public async Task<ActionResult> Register(RegisterRequestDto user)
@@ -20,6 +20,13 @@ public class AuthController(IAuthService authService) : ControllerBase
     {
         var loggedUser = await authService.Login(user);
         return Ok(loggedUser);
+    }
+    
+    [HttpPost("logout")]
+    public ActionResult Logout()
+    {
+        var accessToken = Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
+        return Ok(authService.Logout(accessToken));
     }
     
 }
